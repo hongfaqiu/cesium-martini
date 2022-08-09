@@ -1,16 +1,17 @@
-import TerrainWorker from "web-worker:./worker";
+import { TerrainWorkerInput } from "./worker-util";
+import { TerrainWorkerOutput } from "./worker-util";
 
 const resolves = {};
 const rejects = {};
 let globalMsgId = 0; // Activate calculation in the worker, returning a promise
 
-async function sendMessage(worker, payload, transferableObjects) {
+async function sendMessage(worker: Worker, payload: any, transferableObjects: ArrayBufferLike[]) {
   const msgId = globalMsgId++;
   const msg = {
     id: msgId,
     payload,
   };
-  return new Promise(function (resolve, reject) {
+  return new Promise<TerrainWorkerOutput>(function (resolve, reject) {
     // save callbacks for later
     resolves[msgId] = resolve;
     rejects[msgId] = reject;
@@ -18,7 +19,7 @@ async function sendMessage(worker, payload, transferableObjects) {
   });
 } // Handle incoming calculation result
 
-function handleMessage(msg) {
+function handleMessage(msg: any) {
   const { id, err, payload } = msg.data;
   if (payload) {
     const resolve = resolves[id];
@@ -45,11 +46,11 @@ function handleMessage(msg) {
 class WorkerFarm {
   worker: Worker;
   constructor() {
-    this.worker = new TerrainWorker();
+    this.worker = new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' });
     this.worker.onmessage = handleMessage;
   }
 
-  async scheduleTask(params, transferableObjects) {
+  async scheduleTask(params: TerrainWorkerInput, transferableObjects: ArrayBufferLike[]) {
     return await sendMessage(this.worker, params, transferableObjects);
   }
 }

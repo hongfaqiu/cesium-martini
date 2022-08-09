@@ -2,8 +2,11 @@
 //const canvas = new OffscreenCanvas(256, 256);
 //const ctx = canvas.getContext("2d");
 
+import ndarray, { NdArray } from "ndarray";
+import Martini from "./martini";
+
 function mapboxTerrainToGrid(
-  png: ndarray<number>,
+  png: NdArray<Uint8Array>,
   interval?: number,
   offset?: number
 ) {
@@ -123,7 +126,7 @@ function _emptyMesh(n: number): TerrainWorkerOutput {
   };
 }
 
-let _meshCache = [];
+let _meshCache: TerrainWorkerOutput[] = [];
 export function emptyMesh(n: number) {
   // A memoized function to return empty meshes
   if (n in _meshCache) {
@@ -141,7 +144,7 @@ export interface QuantizedMeshOptions {
   ellipsoidRadius: number;
 }
 
-function createQuantizedMeshData(tile, mesh, tileSize): TerrainWorkerOutput {
+function createQuantizedMeshData(tile: any, mesh: any, tileSize: number): TerrainWorkerOutput {
   const xvals = [];
   const yvals = [];
   const heightMeters = [];
@@ -203,5 +206,46 @@ function createQuantizedMeshData(tile, mesh, tileSize): TerrainWorkerOutput {
     northIndices,
   };
 }
+export interface TerrainWorkerInput extends QuantizedMeshOptions {
+  imageData: Uint8ClampedArray;
+  maxLength: number | null;
+  x: number;
+  y: number;
+  z: number;
 
-export { mapboxTerrainToGrid, createQuantizedMeshData };
+  /**
+   * Terrain-RGB interval (default 0.1)
+   */
+  interval?: number;
+
+  /**
+   * Terrain-RGB offset (default -10000)
+   */
+  offset?: number;
+}
+
+let martini: Martini;
+
+function decodeTerrain(parameters: TerrainWorkerInput) {
+  const { imageData, tileSize = 256, errorLevel, interval, offset } = parameters;
+
+  const pixels = ndarray(
+    new Uint8Array(imageData),
+    [tileSize, tileSize, 4],
+    [4, 4 * tileSize, 1],
+    0
+  );
+
+  // Tile size must be maintained through the life of the worker
+  martini ??= new Martini(tileSize + 1);
+
+  const terrain = mapboxTerrainToGrid(pixels, interval, offset);
+
+  const tile = martini.createTile(terrain);
+
+  // get a mesh (vertices and triangles indices) for a 10m error
+  const mesh = tile.getMesh(errorLevel, parameters.maxLength);
+  return createQuantizedMeshData(tile, mesh, tileSize);
+}
+
+export { mapboxTerrainToGrid, createQuantizedMeshData, decodeTerrain };

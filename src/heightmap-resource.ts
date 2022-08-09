@@ -3,7 +3,7 @@ import { TileCoordinates } from "./terrain-provider";
 
 export interface HeightmapResource {
   tileSize: number;
-  getTilePixels: (coords: TileCoordinates) => Promise<ImageData>;
+  getTilePixels: (coords: TileCoordinates) => Promise<ImageData | undefined>;
   getTileDataAvailable: (coords: TileCoordinates) => boolean;
 }
 
@@ -22,46 +22,47 @@ const loadImage: (url: string) => Promise<HTMLImageElement> = (url) =>
   });
 
 export interface DefaultHeightmapResourceOpts {
-  url?: string;
+  url: string | Resource;
   skipOddLevels?: boolean;
   maxZoom?: number;
   tileSize?: number;
 }
 
 export class DefaultHeightmapResource implements HeightmapResource {
-  resource: Resource = null;
+  resource: Resource;
   tileSize: number = 256;
   maxZoom: number;
   skipOddLevels: boolean = false;
   contextQueue: CanvasRef[];
 
-  constructor(opts: DefaultHeightmapResourceOpts = {}) {
-    if (opts.url) {
-      this.resource = Resource.createIfNeeded(opts.url);
-    }
+  constructor(opts: DefaultHeightmapResourceOpts) {
+    // @ts-ignore
+    this.resource = Resource.createIfNeeded(opts.url);
     this.skipOddLevels = opts.skipOddLevels ?? false;
     this.tileSize = opts.tileSize ?? 256;
     this.maxZoom = opts.maxZoom ?? 15;
     this.contextQueue = [];
   }
 
-  getCanvas(): CanvasRef {
+  getCanvas() {
     let ctx = this.contextQueue.pop();
     if (ctx == null) {
       const canvas = document.createElement("canvas");
       canvas.width = this.tileSize;
       canvas.height = this.tileSize;
       const context = canvas.getContext("2d");
-      ctx = {
-        canvas,
-        context,
-      };
+      if(context)
+        ctx = {
+          canvas,
+          context,
+        };
     }
     return ctx;
   }
 
-  getPixels(img: HTMLImageElement | HTMLCanvasElement): ImageData {
+  getPixels(img: HTMLImageElement | HTMLCanvasElement): ImageData | undefined {
     const canvasRef = this.getCanvas();
+    if (!canvasRef) return
     const { context } = canvasRef;
     //context.scale(1, -1);
     // Chrome appears to vertically flip the image for reasons that are unclear
@@ -90,11 +91,12 @@ export class DefaultHeightmapResource implements HeightmapResource {
 
   getTilePixels = async (coords: TileCoordinates) => {
     const url = this.buildTileURL(coords);
+    if (!url) return
     let img = await loadImage(url);
     return this.getPixels(img);
   };
 
-  getTileDataAvailable({ z }) {
+  getTileDataAvailable({ z }: { z: number }) {
     if (z == this.maxZoom) return true;
     if (z % 2 == 1 && this.skipOddLevels) return false;
     if (z > this.maxZoom) return false;
