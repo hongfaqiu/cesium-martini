@@ -1,151 +1,54 @@
 # Cesium-Martini
 
-**On-the-fly meshing of raster elevation tiles for the CesiumJS virtual globe**
+**This is a fork from [cesium-martini](https://github.com/davenquinn/cesium-martini)**, click to view details.
 
-![Himalayas](/img/himalayas.jpg)
-
-This package contains a Cesium
-[TerrainProvider](https://cesium.com/docs/cesiumjs-ref-doc/TerrainProvider.html)
-that uses right-triangular irregular networks (RTIN) pioneered by
-[Mapbox's Martini](https://observablehq.com/@mourner/martin-real-time-rtin-terrain-mesh) to
-transform [Terrain-RGB elevation tiles](https://blog.mapbox.com/global-elevation-data-6689f1d0ba65) into
-[quantized mesh terrain](https://github.com/CesiumGS/quantized-mesh),
-for rendering in the [CesiumJS digital globe](https://cesium.com).
-The module provides a general technique applicable to all raster imagery
-(although the Terrain-RGB format is near-ideal for streaming elevation data).
-Fixes for performance and better control of rendering quality are in progress.
-
-This module was created to support our geologic map visualization work
-at [Macrostrat](https://macrostrat.org) and as a building block
-for future rich geoscience visualizations.
-
-
-## Installation
-
-This package is listed on NPM as `@macrostrat/cesium-martini`. It can be installed
-using the command
-
-```
-npm install --save @macrostrat/cesium-martini
-```
+This module can create cesium terrain through raster tile service.
 
 ![Cesium-Martini](/img/cesium-martini.png)
 
-## Development
+## Usage
 
-After cloning this repository, you can build the module (using Rollup) with
-`npm run build`, or build and watch for changes with `npm run watch`.
+```ts
+import { Viewer, Resource } from "cesium";
+import { MartiniTerrainProvider } from "@dde/cesium-martini";
 
-To run an example application, add `MAPBOX_API_TOKEN=<your-mapbox-token>` to a `.env` file.
-in the root of this repository. `npm run dev` bundles and runs the test
-application, which runs in the Webpack development server on `http://localhost:8080`.
+const cesiumViewer = new Viewer("cesiumContainer");
 
-Contributions in the form of bug reports and pull requests are welcome.
-These can be to add functionality (e.g. optional normal-map generation) or for
-performance. See list of [known limitations](#current-known-limitations) below.
+const terrainLayer = new MartiniTerrainProvider({
+  url: new Resource({
+    url: 'https://a.tiles.mapbox.com/v4/mapbox.terrain-rgb/{z}/{x}/{y}.png',
+    queryParameters: {
+      access_token: 'pk.eyJ1IjoibW91cm5lciIsImEiOiJWWnRiWG1VIn0.j6eccFHpE3Q04XPLI7JxbA'
+    }
+  }),
+  requestVertexNormals: true,
+})
 
-## Motivation
+cesiumViewer.scene.terrainProvider = terrainLayer;
+```
 
-The Cesium digital globe is a powerful platform for visualization of geospatial
-data in 3D. Cesium maintains a global elevation dataset as a prebuilt terrain mesh,
-which caches the computationally-intensive step of meshing height-field data
-into a triangle irregular network (TIN). Unfortunately, this
-[quantized mesh](https://github.com/CesiumGS/quantized-mesh) format is relatively
-new, narrowly supported and tailored to Cesium itself. Going forward, supporting
-a TIN format for elevation datasets requires maintenance of significant single-purpose
-processing pipelines and storage resources.
+## Installation
 
-Mapbox maintains a multiscale global elevation dataset in their clever
-[terrain-RGB](https://blog.mapbox.com/global-elevation-data-6689f1d0ba65)
-format, which bridges web standard file formats (PNG images) with traditional raster GIS
-formats for representing terrain. Rasters are the standard representation of elevation data across the
-geosciences, and many pipelines are available to create and modify raster images.
-Basically any elevation dataset can be easily rescaled to the Terrain-RGB
-format, but the jump from there to a "Quantized mesh" is more complicated.
+This package is listed on NPM as `@dde/cesium-martini`. It can be installed
+using the command
 
-Recently, the [MARTINI](https://github.com/mapbox/martini) project by
-[Vladimir Agafonkin](https://agafonkin.com/) at Mapbox demonstrated an
-[elegant algorithmic approach](https://observablehq.com/@mourner/martin-real-time-rtin-terrain-mesh)
-that sidesteps this issue.
-MARTINI meshes based on right-triangulated irregular networks (RTIN, _Evans et al., 1998_)
-and is far quicker than the traditional TIN generation techniques.
+```bash
+yarn add @dde/cesium-martini
+```
 
-A speedy meshing algorithm allows this data-preparation step to be handled
-in the browser after elevation tiles are loaded. Integrating this
-toolchain into the Cesium digital globe enables the usage of Mapbox global
-data and other raster terrain layers (e.g. planetary and bathymetric data!),
-without adding overhead of TIN processing and storage.
+## Demo
 
-## Current limitations
+[online Demo](https://cesium-martini.vercel.app/)
 
-### Lack of support for overzooming
+Launch the app in the demo folder, and then visit <http://localhost:8080/>
 
-Cesium's implementations of the `TerrainProvider` interface are generally geared
-towards representing static terrain meshes. The RTIN algorithm used here can
-dynamically build meshes at a variety of error levels, and the input height
-field are data-dense and can represent extremely detailed meshes at a given zoom level. Currently,
-meshes are generated at levels of detail that undersample the available structure
-in a terrain tile — levels of detail are calibrated to what Cesium needs to
-render visually pleasing output at a given zoom level.
+![Cesium-Martini](https://s1.ax1x.com/2022/08/09/v1GhtO.png)
 
-A smarter and more parsimonious solution would use much lower zoom levels
-for terrain than imagery, using the full resolution of the dataset in
-mesh construction. Done correctly, this could lead to an extremely
-data-efficient and adaptive terrain render, but this seems to run somewhat
-counter to how Cesium internally manages levels of detail. Ideally, someone familiar with the inner workings
-of Cesium would provide some guidance here.
+```node
+yarn
+npm start
+```
 
-### Outstanding bugs and issues
+## Credit
 
-- [ ] High-resolution `@2x` tiles are notionally supported but not well-tested.
-- [ ] There is no formal testing framework to catch regressions.
-- [ ] TypeScript types are discarded on compilation rather than checked properly.
-
-## Prior art and relevant examples
-
-- [Mapbox MARTINI](https://github.com/mapbox/martini)
-- [MARTINI algorithm explanation](https://observablehq.com/@mourner/martin-real-time-rtin-terrain-mesh)
-- [Evans et al., _Right-triangulated irregular networks_, 1998](https://www.cs.ubc.ca/~will/papers/rtin.pdf)
-  ([journal link](https://link.springer.com/article/10.1007/s00453-001-0006-x))
-- [Cesium quantized mesh specification](https://github.com/CesiumGS/quantized-mesh)
-- [Quantized mesh viewer](https://github.com/heremaps/quantized-mesh-viewer)
-- [Cesium globe materials example](https://sandcastle.cesium.com/?src=Globe%20Materials.html)
-- [Cesium sky/atmosphere example](https://sandcastle.cesium.com/?src=Sky%20Atmosphere.html)
-
-## TODO
-
-- Make compatible with Mapbox's new `terrain-dem` tileset if possible
-- Better masking of unavailable tiles
-- Bathymetry option
-- Tie to hillshade generator so the same tiles are loaded
-
-Pull requests for any and all of these priorities are appreciated!
-
-## Changelog
-
-### `[1.2.0]`: November 2021
-
-- Globe caps! (disable using the `fillPoles` option).
-- Some fixes for efficiency
-- Fixed small errors in tile occlusion code
-- Added a `minZoom` configuration option to prevent excessive loading of low-resolution tiles
-- Four (!) pull requests from [@stuarta0](https://github.com/stuarta0) to improve loading of non-Mapbox tilesets
-
-### `[1.1.3]`: June 2021
-
-- Fix memory leak where `ArrayBuffer`s were retained due to console logging.
-
-### `[1.1.2]`: May 2021
-
-- Fixed a bug with loading high-resolution tiles
-- Added a `skipOddLevels` option that significantly reduces the load of zooming through many terrain levels.
-  This is enabled by default.
-- Greatly increase skirt height
-
-### `[1.1.0]`: May 2021
-
-- Fixed a bug with tile occlusion south of the equator for high-detail tiles
-- A quicker and more robust mesh-densification algorithm for low zoom levels
-- More configurability with options like `detailScalar` and `minimumErrorLevel`.
-- Updated README and examples
-- Uses web workers for rapid tile generation off the main thread
+<https://github.com/davenquinn/cesium-martini>

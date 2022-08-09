@@ -2,7 +2,7 @@
   "name": "@dde/cesium-martini",
   "version": "1.0.0",
   "packageManager": "pnpm@6.30.1",
-  "description": "",
+  "description": "Create cesium terrain through raster tile service",
   "source": "src/index.ts",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
@@ -14,6 +14,14 @@
     "start": "webpack-dev-server --mode=development",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/hongfaqiu/cesium-martini.git"
+  },
+  "keywords": [
+    "terrain",
+    "Cesium"
+  ],
   "author": "",
   "license": "MIT",
   "peerDependencies": {
