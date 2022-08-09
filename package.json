@@ -1,5 +1,5 @@
 {
-  "name": "@dde/cesium-martini",
+  "name": "@zjugis/cesium-martini",
   "version": "1.0.0",
   "packageManager": "pnpm@6.30.1",
   "description": "Create cesium terrain through raster tile service",

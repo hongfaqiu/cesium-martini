@@ -29,11 +29,11 @@ cesiumViewer.scene.terrainProvider = terrainLayer;
 
 ## Installation
 
-This package is listed on NPM as `@dde/cesium-martini`. It can be installed
+This package is listed on NPM as `@zjugis/cesium-martini`. It can be installed
 using the command
 
 ```bash
-yarn add @dde/cesium-martini
+yarn add @zjugis/cesium-martini
 ```
 
 ## Demo
@@ -45,7 +45,7 @@ Launch the app in the demo folder, and then visit <http://localhost:8080/>
 ![Cesium-Martini](https://s1.ax1x.com/2022/08/09/v1GhtO.png)
 
 ```node
-yarn
+pnpm install
 npm start
 ```
 
