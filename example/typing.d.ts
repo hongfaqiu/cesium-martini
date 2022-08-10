@@ -1,4 +1,4 @@
-declare namespace Layer {
+export  declare namespace Layer {
 
   /**
    * 图层元数据

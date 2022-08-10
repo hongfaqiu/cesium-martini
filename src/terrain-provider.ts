@@ -29,7 +29,6 @@ export interface TileCoordinates {
 interface MartiniTerrainOpts {
   url: string | Resource;
   ellipsoid?: Ellipsoid;
-  // workerURL: string;
   detailScalar?: number;
   minimumErrorLevel?: number;
   maxWorkers?: number;
@@ -86,10 +85,8 @@ export default class MartiniTerrainProvider {
   requestVertexNormals: boolean | undefined;
   requestWaterMask: boolean | undefined;
 
-  // @ts-ignore
   constructor(opts: MartiniTerrainOpts) {
-    //this.martini = new Martini(257);
-    this.resource = new DefaultHeightmapResource({url: opts.url});
+    this.resource = new DefaultHeightmapResource({ url: opts.url });
 
     this.interval = opts.interval ?? 0.1;
     this.offset = opts.offset ?? -10000;

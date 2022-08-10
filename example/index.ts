@@ -1,5 +1,6 @@
 import { Cartesian3, Math as CMath } from 'cesium';
 import CesiumMap from './map';
+import { Layer } from './typing';
 
 const BaseMap: Layer.LayerItem = {
   layerName: 'esri-global',

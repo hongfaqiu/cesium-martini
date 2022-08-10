@@ -62,7 +62,7 @@ export class DefaultHeightmapResource implements HeightmapResource {
 
   getPixels(img: HTMLImageElement | HTMLCanvasElement): ImageData | undefined {
     const canvasRef = this.getCanvas();
-    if (!canvasRef) return
+    if (!canvasRef) return undefined
     const { context } = canvasRef;
     //context.scale(1, -1);
     // Chrome appears to vertically flip the image for reasons that are unclear
@@ -91,7 +91,7 @@ export class DefaultHeightmapResource implements HeightmapResource {
 
   getTilePixels = async (coords: TileCoordinates) => {
     const url = this.buildTileURL(coords);
-    if (!url) return
+    if (!url) return undefined
     let img = await loadImage(url);
     return this.getPixels(img);
   };

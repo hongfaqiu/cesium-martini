@@ -1,6 +1,7 @@
 import { ArcGisMapServerImageryProvider, Cartesian3, CesiumTerrainProvider, createWorldTerrain, EllipsoidTerrainProvider, GeographicTilingScheme, ImageryProvider, Resource, Viewer, WebMercatorTilingScheme } from 'cesium';
 import "cesium/Build/Cesium/Widgets/widgets.css";
-import { MartiniTerrainProvider } from "../src/index";
+import { MartiniTerrainProvider } from "../lib";
+import { Layer } from './typing';
 
 /**
  * CesiumMap类

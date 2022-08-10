@@ -1,3 +1,5 @@
+// @ts-ignore
+import TerrainWorker from "web-worker:./worker";
 import { TerrainWorkerInput } from "./worker-util";
 import { TerrainWorkerOutput } from "./worker-util";
 
@@ -46,7 +48,7 @@ function handleMessage(msg: any) {
 class WorkerFarm {
   worker: Worker;
   constructor() {
-    this.worker = new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' });
+    this.worker = new TerrainWorker();
     this.worker.onmessage = handleMessage;
   }
 
