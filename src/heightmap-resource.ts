@@ -12,15 +12,6 @@ interface CanvasRef {
   context: CanvasRenderingContext2D;
 }
 
-const loadImage: (url: string) => Promise<HTMLImageElement> = (url) =>
-  new Promise((resolve, reject) => {
-    const img = new Image();
-    img.addEventListener("load", () => resolve(img));
-    img.addEventListener("error", (err) => reject(err));
-    img.crossOrigin = "anonymous";
-    img.src = url;
-  });
-
 export interface DefaultHeightmapResourceOpts {
   url: string | Resource;
   skipOddLevels?: boolean;
@@ -60,7 +51,7 @@ export class DefaultHeightmapResource implements HeightmapResource {
     return ctx;
   }
 
-  getPixels(img: HTMLImageElement | HTMLCanvasElement): ImageData | undefined {
+  getPixels(img: HTMLImageElement | HTMLCanvasElement | ImageBitmap): ImageData | undefined {
     const canvasRef = this.getCanvas();
     if (!canvasRef) return undefined
     const { context } = canvasRef;
@@ -74,7 +65,7 @@ export class DefaultHeightmapResource implements HeightmapResource {
     return pixels;
   }
 
-  buildTileURL(tileCoords: TileCoordinates) {
+  loadImage(tileCoords: TileCoordinates) {
     // reverseY for TMS tiling (https://gist.github.com/tmcw/4954720)
     // See tiling schemes here: https://www.maptiler.com/google-maps-coordinates-tile-bounds-projection/
     const { z, y } = tileCoords;
@@ -86,13 +77,11 @@ export class DefaultHeightmapResource implements HeightmapResource {
         },
         preserveQueryParameters: true,
       })
-      .getUrlComponent(true);
+      .fetchImage()
   }
 
   getTilePixels = async (coords: TileCoordinates) => {
-    const url = this.buildTileURL(coords);
-    if (!url) return undefined
-    let img = await loadImage(url);
+    const img = await this.loadImage(coords);
     return this.getPixels(img);
   };
 

@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/hongfaqiu/cesium-martini/compare/v1.0.0...v1.0.1) (2022-08-10)
+
+
+### Bug Fixes
+
+* **CI:** use rollup and build webworker as inline ([2deffde](https://github.com/hongfaqiu/cesium-martini/commit/2deffde320ce47e2991f4ad0eb009b3f96f80afa))
+
 # 1.0.0 (2022-08-09)
 
 

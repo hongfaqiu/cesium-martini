@@ -84,6 +84,7 @@ export default class MartiniTerrainProvider {
   RADIUS_SCALAR = 1.0;
   requestVertexNormals: boolean | undefined;
   requestWaterMask: boolean | undefined;
+  availability: boolean = false
 
   constructor(opts: MartiniTerrainOpts) {
     this.resource = new DefaultHeightmapResource({ url: opts.url });
@@ -97,6 +98,7 @@ export default class MartiniTerrainProvider {
     this.levelOfDetailScalar = (opts.detailScalar ?? 4.0) + CMath.EPSILON5;
 
     this.ready = true;
+    this.availability = true;
     this.readyPromise = Promise.resolve(true);
     this.minError = opts.minimumErrorLevel ?? 0.1;
     this.requestVertexNormals = opts.requestVertexNormals
