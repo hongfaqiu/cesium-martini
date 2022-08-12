@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/hongfaqiu/cesium-martini/compare/v1.0.1...v1.1.0) (2022-08-12)
+
+
+### Features
+
+* add Provider availability attribute ([450befe](https://github.com/hongfaqiu/cesium-martini/commit/450befe3c98f653c6a75b45bf20ef18981f015a8))
+
 ## [1.0.1](https://github.com/hongfaqiu/cesium-martini/compare/v1.0.0...v1.0.1) (2022-08-10)
 
 
