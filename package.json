@@ -9,7 +9,8 @@
   "scripts": {
     "build": "rollup -c & webpack --mode=production",
     "build:lib": "rollup -c",
-    "start": "webpack-dev-server --mode=development & rollup -c -w",
+    "dev:lib": "rollup -c -w",
+    "start": "webpack-dev-server --mode=development",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

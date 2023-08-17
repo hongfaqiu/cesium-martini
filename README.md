@@ -10,7 +10,7 @@ This module can create cesium terrain through raster tile service.
 
 ```ts
 import { Viewer, Resource } from "cesium";
-import { MartiniTerrainProvider } from "@dde/cesium-martini";
+import { MartiniTerrainProvider } from "@zjugis/cesium-martini";
 
 const cesiumViewer = new Viewer("cesiumContainer");
 
