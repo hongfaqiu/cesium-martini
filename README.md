@@ -16,13 +16,13 @@ const cesiumViewer = new Viewer("cesiumContainer");
 
 const terrainLayer = new MartiniTerrainProvider({
   url: new Resource({
-    url: 'https://a.tiles.mapbox.com/v4/mapbox.terrain-rgb/{z}/{x}/{y}.png',
+    url: 'https://api.mapbox.com/v4/mapbox.terrain-rgb/{z}/{x}/{y}@2x.webp',
     queryParameters: {
-      access_token: 'pk.eyJ1IjoibW91cm5lciIsImEiOiJWWnRiWG1VIn0.j6eccFHpE3Q04XPLI7JxbA'
-    }
+      access_token: 'pk.eyJ1Ijoic3ZjLW9rdGEtbWFwYm94LXN0YWZmLWFjY2VzcyIsImEiOiJjbG5sMnFlZ28wb2d5MnFtb2xnMG90OW96In0.IE8Vqs0NTzCY0WqPzV9kcw'
+    },
   }),
   requestVertexNormals: true,
-})
+});
 
 cesiumViewer.scene.terrainProvider = terrainLayer;
 ```
@@ -33,12 +33,12 @@ This package is listed on NPM as `@zjugis/cesium-martini`. It can be installed
 using the command
 
 ```bash
-yarn add @zjugis/cesium-martini
+npm install --save @zjugis/cesium-martini
 ```
 
 ## Demo
 
-[online Demo](https://cesium-martini.vercel.app/)
+[online Demo](https://cesium-martini.opendde.com/)
 
 Launch the app in the demo folder, and then visit <http://localhost:8080/>
 
