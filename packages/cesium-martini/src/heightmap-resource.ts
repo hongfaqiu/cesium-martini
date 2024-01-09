@@ -51,7 +51,8 @@ export class DefaultHeightmapResource implements HeightmapResource {
     return ctx;
   }
 
-  getPixels(img: HTMLImageElement | HTMLCanvasElement | ImageBitmap): ImageData | undefined {
+  getPixels(img: HTMLImageElement | HTMLCanvasElement | ImageBitmap | undefined): ImageData | undefined {
+    if (!img) return undefined;
     const canvasRef = this.getCanvas();
     if (!canvasRef) return undefined
     const { context } = canvasRef;

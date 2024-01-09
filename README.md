@@ -46,7 +46,7 @@ Launch the app in the demo folder, and then visit <http://localhost:8080/>
 
 ```node
 pnpm install
-npm start
+pnpm dev
 ```
 
 ## Credit

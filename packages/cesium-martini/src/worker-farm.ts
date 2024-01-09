@@ -1,10 +1,8 @@
-// @ts-ignore
-import TerrainWorker from "web-worker:./worker";
 import { TerrainWorkerInput } from "./worker-util";
 import { TerrainWorkerOutput } from "./worker-util";
 
-const resolves = {};
-const rejects = {};
+const resolves: any = {};
+const rejects: any = {};
 let globalMsgId = 0; // Activate calculation in the worker, returning a promise
 
 async function sendMessage(worker: Worker, payload: any, transferableObjects: ArrayBufferLike[]) {
@@ -48,7 +46,9 @@ function handleMessage(msg: any) {
 class WorkerFarm {
   worker: Worker;
   constructor() {
-    this.worker = new TerrainWorker();
+    this.worker = new Worker(new URL("./worker.ts", import.meta.url), {
+      type: "module"
+    });
     this.worker.onmessage = handleMessage;
   }
 

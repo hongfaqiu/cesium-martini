@@ -1,0 +1,28 @@
+{
+  "name": "cesium-martini-example",
+  "version": "1.1.0",
+  "description": "Create cesium terrain through raster tile service",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/hongfaqiu/cesium-martini.git"
+  },
+  "keywords": [
+    "terrain",
+    "Cesium"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@zjugis/cesium-martini": "workspace:^",
+    "cesium": "^1.113.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "vite": "^4.5.1",
+    "vite-plugin-cesium": "^1.2.22"
+  }
+}
