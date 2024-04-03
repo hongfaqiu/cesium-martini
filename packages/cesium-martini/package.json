@@ -37,7 +37,8 @@
     "ndarray": "^1.0.19"
   },
   "devDependencies": {
-    "@surma/rollup-plugin-off-main-thread": "^2.2.3",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
     "@types/ndarray": "^1.0.14",
     "@types/node": "^20.10.7",
     "cesium": "^1.113.0",

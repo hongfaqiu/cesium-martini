@@ -2,20 +2,28 @@ import { readFileSync } from 'fs';
 import esbuild from 'rollup-plugin-esbuild';
 import path from 'path';
 import dts from 'rollup-plugin-dts';
-import OMT from "@surma/rollup-plugin-off-main-thread";
+import resolve from "@rollup/plugin-node-resolve";
+import webWorkerLoader from "rollup-plugin-web-worker-loader";
+import commonjs from '@rollup/plugin-commonjs';
 
 const pkg = JSON.parse(
   readFileSync(new URL('./package.json', import.meta.url)).toString(),
 );
 
 const deps = { ...pkg.dependencies, ...pkg.peerDependencies };
-const external = Object.keys(deps)
+const external = Object.keys(deps).filter(dep => dep !== "ndarray");  // 过滤并删除'moduleA'和'moduleB'
+const extensions = ["ts", "js"]
 const plugins = [
-  OMT(),
+  commonjs(),
+  resolve({ extensions, module: true }),
+  webWorkerLoader({
+    extensions: ["ts", "js"],
+  }),
   esbuild({
     target: 'node14',
   }),
 ]
+
 
 /**
  * @type {import('rollup').RollupOptions}
