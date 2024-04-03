@@ -11,7 +11,8 @@ const pkg = JSON.parse(
 );
 
 const deps = { ...pkg.dependencies, ...pkg.peerDependencies };
-const external = Object.keys(deps).filter(dep => dep !== "ndarray");  // 过滤并删除'moduleA'和'moduleB'
+const external = Object.keys(deps);
+
 const extensions = ["ts", "js"]
 const plugins = [
   commonjs(),

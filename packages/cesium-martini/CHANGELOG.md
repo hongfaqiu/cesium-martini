@@ -1,5 +1,11 @@
 # @zjugis/cesium-martini
 
+## 1.2.2
+
+### Patch Changes
+
+- move ndarray to devDependices
+
 ## 1.2.1
 
 ### Patch Changes

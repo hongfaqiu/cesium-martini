@@ -1,6 +1,6 @@
 {
   "name": "@zjugis/cesium-martini",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Create cesium terrain through raster tile service",
   "source": "src/index.ts",
   "type": "module",
@@ -33,9 +33,6 @@
   "peerDependencies": {
     "cesium": "*"
   },
-  "dependencies": {
-    "ndarray": "^1.0.19"
-  },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
@@ -43,6 +40,7 @@
     "@types/node": "^20.10.7",
     "cesium": "^1.113.0",
     "esbuild": "^0.19.2",
+    "ndarray": "^1.0.19",
     "rollup": "^3.29.4",
     "rollup-plugin-dts": "^6.1.0",
     "rollup-plugin-esbuild": "^5.0.0",

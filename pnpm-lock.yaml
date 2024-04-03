@@ -35,10 +35,6 @@ importers:
         version: 1.2.22(cesium@1.113.0)(rollup@2.79.1)(vite@4.5.1)
 
   packages/cesium-martini:
-    dependencies:
-      ndarray:
-        specifier: ^1.0.19
-        version: 1.0.19
     devDependencies:
       '@rollup/plugin-commonjs':
         specifier: ^25.0.7
@@ -58,6 +54,9 @@ importers:
       esbuild:
         specifier: ^0.19.2
         version: 0.19.11
+      ndarray:
+        specifier: ^1.0.19
+        version: 1.0.19
       rollup:
         specifier: ^3.29.4
         version: 3.29.4
@@ -1761,7 +1760,7 @@ packages:
 
   /iota-array@1.0.0:
     resolution: {integrity: sha512-pZ2xT+LOHckCatGQ3DcG/a+QuEqvoxqkiL7tvE8nn3uuu+f6i1TtpB5/FtWFbxUuVr5PZCx8KskuGatbJDXOWA==}
-    dev: false
+    dev: true
 
   /is-array-buffer@3.0.2:
     resolution: {integrity: sha512-y+FyyR/w8vfIRq4eQcM1EYgSTnmHXPqaF+IgzgraytCFq5Xh8lllDVmAZolPJiZttZLeFSINPYMaEJ7/vWUa1w==}
@@ -1791,7 +1790,7 @@ packages:
 
   /is-buffer@1.1.6:
     resolution: {integrity: sha512-NcdALwpXkTm5Zvvbk7owOUSvVvBKDgKP5/ewfXEznmQFfs4ZRmanOeKBTjRVjka3QFoN6XJ+9F3USqfHqTaU5w==}
-    dev: false
+    dev: true
 
   /is-builtin-module@3.2.1:
     resolution: {integrity: sha512-BSLE3HnV2syZ0FK0iMA/yUGplUeMmNz4AW5fnTunbCIqZi4vG3WjJT9FHMy5D69xmAYBHXQhJdALdpwVxV501A==}
@@ -2154,7 +2153,7 @@ packages:
     dependencies:
       iota-array: 1.0.0
       is-buffer: 1.1.6
-    dev: false
+    dev: true
 
   /normalize-package-data@2.5.0:
     resolution: {integrity: sha512-/5CMN3T0R4XTj4DcGaexo+roZSdSFW/0AOOTROrjxzCG1wrWXEsGbRKevjlIL+ZDE4sZlJr5ED4YW0yqmkK+eA==}

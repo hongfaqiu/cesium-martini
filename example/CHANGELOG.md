@@ -1,5 +1,12 @@
 # cesium-martini-example
 
+## 1.1.3
+
+### Patch Changes
+
+- Updated dependencies
+  - @zjugis/cesium-martini@1.2.2
+
 ## 1.1.2
 
 ### Patch Changes
