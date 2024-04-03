@@ -18,6 +18,7 @@ const plugins = [
   commonjs(),
   resolve({ extensions, module: true }),
   webWorkerLoader({
+    targetPlatform: "browser",
     extensions: ["ts", "js"],
   }),
   esbuild({

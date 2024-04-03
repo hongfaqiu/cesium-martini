@@ -1,6 +1,6 @@
 {
   "name": "@zjugis/cesium-martini",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Create cesium terrain through raster tile service",
   "source": "src/index.ts",
   "type": "module",

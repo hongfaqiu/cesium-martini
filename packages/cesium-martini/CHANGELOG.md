@@ -1,5 +1,11 @@
 # @zjugis/cesium-martini
 
+## 1.2.3
+
+### Patch Changes
+
+- browser target worker bundle
+
 ## 1.2.2
 
 ### Patch Changes
